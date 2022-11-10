@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>选择场次</title>
+</head>
+<style>
+    a:-webkit-any-link {
+        color: -webkit-link;
+        cursor: pointer;
+        text-decoration: none;
+    }
+</style>
+<body>
+<div>
+    <div class="col-md-12 column">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle active" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/role">首页</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="">
+                        <a th:href="@{'/user/showCinema'}">电影</a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{'/user/userInfo'}" >个人中心</a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left" th:action="@{'/user/byfilmName'}" role="search">
+                    <div class="form-group">
+                        <input type="text" name="filmName" class="form-control" placeholder="电影"/>
+                    </div> <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <form th:action="@{/logout}" method="post">
+                            <button class="btn btn-danger" style="position: relative;  left: -44px; top: 0px; height: 50px; color: burlywood;
+								 opacity: 1;border:none;background-color: white;cursor: pointer;">退出</button>
+                        </form>
+
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="col-md-4" th:each="filmAndCinema:${filmAndCinemas}" >
+        <div class="thumbnail " >
+            <a  class="info" th:href="@{'/user/queryfilm?filmId='+${filmAndCinema.film.filmId}}">
+                <img alt="300x200" style="width:200px;height: 300px" th:src="@{'/RSIMAGE/'+${filmAndCinema.film.filmPicture}}">
+            </a>
+            <div class="caption film">
+                <h3 class="text-success" style="text-align: center" th:text="${filmAndCinema.film.filmName}"></h3>
+                <p class="text-success text-center">
+                    <input type="hidden" th:value="${filmAndCinema.film.filmId}">
+                    <a class="btn btn-primary sub" >选择场次</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <ul class="pagination page">
+            <li>
+                <a  href="#" th:text="${recordCount}+'部'"></a>
+            </li>
+            <li>
+                <a href="#" th:text="${pages}+'页'"></a>
+            </li>
+            <li th:class="${page==1 ?'disabled':''}">
+                <a th:href="@{'/user/selectSeatRelation?page='+${page - 1}}">Prev</a></li>
+
+            <li   th:each="i:${#numbers.sequence(page,pages)}" th:class="${page==i ?'active':''}" >
+                <a  th:href="@{'/user/selectSeatRelation?page='+${i}}"  th:text="${i}"></a>
+            </li>
+
+            <li th:class="${page==pages ?'disabled':''}">
+                <a th:href="@{'/user/selectSeatRelation?page='+${page+1}}">Next</a>
+            </li>
+        </ul>
+    </div>
+    <div th:if="${viewingRelations}">
+        <div class="col-md-4"  th:each="viewingRelations:${viewingRelations}">
+            <div class="thumbnail" >
+                <span >日期：</span><p  style="font-size: 24px;"class="text-success"  th:text="${viewingRelations.viewingTime.viemingDate}"></p>
+                <div class="caption text-center" style="font-size: 18px;">
+                    <a  th:href="@{'/user/toSelectSeats?filmId='+${filmId}+'&cinemaId='+${cinemaId}+'&seatId='+${viewingRelations.seats.seatId}+'&viewingRelationId='+${viewingRelations.viewingRelationId}+'&viewingTimeId='+${viewingRelations.viewingTime.viewingTimeId}}">
+                        <p class="text-info" >时间：<span th:text="${viewingRelations.viewingTime.beginTime}"></span><b>--</b> <span th:text="${viewingRelations.viewingTime.overTime}"></span> </p>
+                        <p class="text-info" >影厅：<span th:text="${viewingRelations.seats.cinemaNum}"></span></p>
+                        <strong style="color: #669900" th:text="${viewingRelations.viewingTime.sessions==0?'英语2D':'英语3D'}"></strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" th:if="${count >0}">
+            <ul class="pagination page">
+                <li>
+                    <a  href="#" th:text="${count}+'场'"></a>
+                </li>
+                <li>
+                    <a href="#" th:text="${countPages}+'页'"></a>
+                </li>
+                <li th:class="${page==1 ?'disabled':''}">
+                    <a th:href="@{'/user/selectSeatRelation?page='+${page - 1}+'&filmId='+${filmId}}">Prev</a></li>
+
+                <li   th:each="i:${#numbers.sequence(page,countPages)}" th:class="${page==i ?'active':''}" >
+                    <a  th:href="@{'/user/selectSeatRelation?page='+${i}+'&filmId='+${filmId}}"  th:text="${i}"></a>
+                </li>
+
+                <li th:class="${page==countPages ?'disabled':''}">
+                    <a th:href="@{'/user/selectSeatRelation?page='+${page+1}+'&filmId='+${filmId}}">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</div>
+<script>
+    $(function () {
+        // $(".film").mouseenter(function (){
+        //     location.href="/user/selectSeatRelation?filmId="+$(this).parent().find($("input")).val() ;
+        // })
+        $(".film").find($(".sub")).each(function () {
+            $(this).click(function () {
+                location.href="/user/selectSeatRelation?filmId="+$(this).parent().find($("input")).val() ;
+            })
+        })
+        $("ul a").each(function () {
+            $("a").eq(0).addClass('selected');
+            $(this).click(function () {
+                $(this).siblings('a').removeClass('selected');  // 删除其他兄弟元素的样式
+                $(this).addClass('selected');   // 添加当前元素的样式
+
+            })
+        })
+    })
+</script>
+</body>
+</html>

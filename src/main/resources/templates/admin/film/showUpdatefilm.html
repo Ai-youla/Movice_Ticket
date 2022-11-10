@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>编辑电影</title>
+		<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/admin.css"/>
+	</head>
+	<style>
+		select{
+			display: inline-block;
+			height: 38px;
+			line-height: 38px;
+			border: 1px solid #e6e6e6;
+			background-color: #fff;
+			border-radius: 2px;
+			width: 100%;
+			padding-left: 10px;
+			cursor: pointer;
+		}
+	</style>
+	<body>
+		<div class="layui-tab page-content-wrap">
+		  <ul class="layui-tab-title">
+		    <li class="layui-this">编辑电影</li> 
+		    <li>编辑电影图片</li> 
+		  </ul>
+		  <div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show"><!--class="layui-form"-->
+		    	<form  th:action="@{'/admin/updateFilm'}"  enctype="multipart/form-data" method="post">
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">图片：</label>
+				    <div class="layui-input-block">
+				        <img  style="width:100px;" alt="404" th:src="@{'/RSIMAGE/'+${film.filmPicture}}">
+				        <input type="hidden" id="filmId" name="filmId" th:value="${film.filmId}" class="form-control" placeholder="" >
+				    </div>
+					  <label class="layui-form-label">视频：</label>
+					  <div class="layui-input-block">
+						  <video   width="100px" th:src="@{'/RSIMAGE/'+${film.video}}" th:controls="true"  loop></video>
+					  </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">电影名：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="filmName" th:value="${film.filmName}" required  lay-verify="required"  autocomplete="off" class="layui-input " >
+				    </div>
+				  </div>
+				    
+				   <div class="layui-form-item">
+						<label class="layui-form-label">电影类型：</label>
+						<div class="layui-input-block" >
+							<select name="filmTypeId" id="se" >
+							        <option value="">--请选择--</option> 
+						            <option th:each="filmType:${filmTypes}" th:selected="${filmType.filmTypeId==film.filmType.filmTypeId}"
+											th:value="${filmType.filmTypeId}" th:text="${filmType.type}" ></option>
+					        </select>
+						</div>
+				  </div> 
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">时长：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="movieDuration" th:value="${film.movieDuration}" required  lay-verify="required"  autocomplete="off" class="layui-input " >
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">状态：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="state"  th:value="${film.state}"  required  lay-verify="required"  autocomplete="off" class="layui-input " >
+				    </div>
+				  </div>
+				  <input type="hidden"  name="filmPriceId" th:value="${film.filmPrice.filmPriceId}" class="form-control"  >
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">价格：</label>
+				    <div class="layui-input-block">
+				      
+				      <input type="text" name="price" th:value="${film.filmPrice.price}" required  lay-verify="required"  autocomplete="off" class="layui-input " >
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">上映日期：</label>
+				    <div class="layui-input-block">
+				      <input type="date" name="startDate" th:value="${film.startDate}" required  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input"  >
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">参演人员：</label>
+				    <div class="layui-input-block">
+				        <span  th:each="playRelation:${playRelations}">
+				       <input type="checkbox" name="playRelationId"  
+				       th:value="${playRelation.playRelationId}" th:text="${playRelation.participants.tureName}">
+				       <span th:text="${playRelation.participants.type}"></span>
+				       </span>  
+				     </div>
+				  </div>
+				
+				  <div class="layui-form-item layui-form-text">
+				    <label class="layui-form-label">简介：</label>
+				    <div class="layui-input-block">
+				      <textarea name="filmDescribe" th:text="${film.filmDescribe}" placeholder="请输入内容" class="layui-textarea"></textarea>
+				    </div>
+				  </div> 
+				  <div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <input type="submit" class="layui-btn layui-btn-normal"  value="立即提交 ">
+				      <a class="layui-btn layui-btn-normal" th:href="@{'/admin/selectFilm'}">返回</a>
+				    </div>
+				  </div>
+				</form>
+		    </div>
+		     <div class="layui-tab-item">
+		    	 	<form class="layui-form" th:action="@{'/admin/updateFilmPicture'}" id="upfile" enctype="multipart/form-data" method="post" >
+						 <div class="layui-form-item">
+						    <label class="layui-form-label">图片：</label>
+						    <div class="layui-input-block">
+						    	<img class="img"  style="width:100px;" alt="404"  th:src="@{'/RSIMAGE/'+${film.filmPicture }}">
+        						 <input type="hidden" name="filmId" th:value="${film.filmId }"/>
+						     </div>
+							 <label class="layui-form-label">新图片：</label>
+							 <div class="layui-input-block">
+								 <img id="img" width="100px" src="">
+								 <input type="hidden" id="pictureName" name="filmPicture">
+								 <input type="file"  id="picturefile" onchange="updata()"   autocomplete="off" class="layui-input " >
+							 </div>
+						  </div>
+						  <div class="layui-form-item">
+							  <label class="layui-form-label">原视频：</label>
+							  <div class="layui-input-block">
+								  <video   width="100px" th:src="@{'/RSIMAGE/'+${film.video}}" th:controls="true"  loop></video>
+							  </div>
+							  <label class="layui-form-label">视频：</label>
+							  <div class="layui-input-block">
+								  <video id="videos" width="100px" src="" th:controls="true"  loop></video>
+								  <input type="hidden" id="videoName" name="video">
+								  <input type="file" id="videofile" onchange="upvideo()"
+										 autocomplete="off" class="layui-input ">
+							  </div>
+						  </div>
+						  <div class="layui-form-item">
+						    <div class="layui-input-block">
+						      <input type="submit" class="layui-btn layui-btn-normal"  value="立即提交 ">
+						      <a class="layui-btn layui-btn-normal" th:href="@{'/admin/selectFilm'}">返回</a>
+						    </div>
+						  </div>  
+					</form>
+		    	</div>
+		  </div>
+		</div>
+	<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	 <script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+	</body>
+	<script>
+		function updata(){
+			var formData = new FormData($("#upfile")[0]);
+			formData.append('photo',document.getElementById('picturefile').files[0]);
+			$.ajax({
+				url:'/admin/upNewpicture',
+				type:"post",
+				data:formData,
+				contentType: false,
+				processData: false,
+				success:function(data){
+					if (data.type == "success") {
+						$("#img").attr("src",'/RSIMAGE/'+data.fileName);
+						$("#pictureName").val(data.fileName);
+					} else {
+						alert(data.msg);
+					}
+				},
+				error:function(data) {
+					alert("上传失败")
+				}
+			})
+		}
+		function upvideo(){
+			var formData = new FormData($("#upfile")[0]);
+			formData.append('video',document.getElementById('videofile').files[0]);
+			$.ajax({
+				url:'/admin/upNewvideo',
+				type:"post",
+				data:formData,
+				contentType: false,
+				processData: false,
+				success:function(data){
+					if (data.type == "success") {
+						$("#videos").attr("src",'/RSIMAGE/'+data.fileName);
+						$("#videoName").val(data.fileName);
+					} else {
+						alert(data.msg);
+					}
+				},
+				error:function(data) {
+					alert("上传失败")
+				}
+			})
+		}
+	</script>
+</html>

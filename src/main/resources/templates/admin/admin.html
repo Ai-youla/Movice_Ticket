@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>网站后台管理</title>
+		<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/admin.css"/>
+		<link rel="stylesheet" href="/font_1fuzce9vm81/iconfont.css"/>
+	</head>
+	<body>
+		<div class="main-layout" id='main-layout'>
+			<!--侧边栏-->
+			<div class="main-layout-side">
+				<div class="m-logo"><span class="iconfont icon-dianying"></span>海淘电影票销售平台
+				</div>
+				<ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
+				   
+				  <li class="layui-nav-item">
+				    <a href="javascript:;"><i class="iconfont">&#xe606;</i>用户管理</a>
+				    <dl class="layui-nav-child">
+				    <dd><a href="javascript:;" data-url="admin/super" data-id='15'  data-text="个人中心"><span class="l-line"></span>个人中心</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/ListUser" data-id='3' data-text="用户列表"><span class="l-line"></span>用户列表</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/toProduce" data-id='1' data-text="新建积分商品"><span class="l-line"></span>新建积分商品</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/selectProduce" data-id='2' data-text="查看积分商品"><span class="l-line"></span>查看积分商品</a></dd>
+				    <dd><a href="javascript:;" data-url="user/selectFilmReview" data-id='6' data-text="查看影评"><span class="l-line"></span>查看影评</a></dd>
+				    </dl>
+				  </li>
+				   <li class="layui-nav-item">
+				    <a href="javascript:;"><span class="iconfont icon-ai239"></span>电影管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;" data-url="admin/toCreatePerson" data-id='5' data-text="新建参演演员"><span class="l-line"></span>新建参演演员</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/selectPerson" data-id='9' data-text="查看参演演员"><span class="l-line"></span>查看参演演员</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/toCreatePlayRelation" data-id='4' data-text="绑定人员"><span class="l-line"></span>绑定人员</a></dd>
+				   	  <dd><a href="javascript:;" data-url="admin/toCreateFilm" data-id='7' data-text="新建电影"><span class="l-line"></span>新建电影</a></dd>
+				     <dd><a href="javascript:;" data-url="admin/selectFilm" data-id='8' data-text="查看电影"><span class="l-line"></span>查看电影</a></dd>
+				    </dl>
+				  </li>
+				  <li class="layui-nav-item">
+				    <a href="javascript:;"><span class="iconfont icon-changciguanli"></span>场次管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;" data-url="admin/toCtreateViewingTime" data-id='10' data-text="新建场次"><span class="l-line"></span>新建场次</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/selectViewingTime" data-id='11' data-text="查看场次"><span class="l-line"></span>查看场次</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/toCreateViewingRelation" data-id='12' data-text="绑定场次"><span class="l-line"></span>绑定场次</a></dd>
+				    <dd><a href="javascript:;" data-url="admin/toUpdateViewingRelation" data-id='13' data-text="查看绑定场次"><span class="l-line"></span>查看绑定场次</a></dd>
+				    </dl>
+				  </li>
+				  <li class="layui-nav-item">
+				    <a href="javascript:;"><span class="iconfont icon-dianying"></span>影院管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;" data-url="admin/toCreateCinema" data-id='14' data-text="新建影院"><span class="l-line"></span>新建影院</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/selectCinema" data-id='16' data-text="查询影院信息"><span class="l-line"></span>查询影院信息</a></dd>
+						<dd><a href="javascript:;" data-url="admin/toCreateFilmAndCinema" data-id='22' data-text="影院分配电影"><span class="l-line"></span>影院分配电影</a></dd>
+						<dd><a href="javascript:;" data-url="admin/showFilmAndCinema" data-id='25' data-text="已分配电影"><span class="l-line"></span>已分配电影</a></dd>
+					</dl>
+				  </li>
+				   <li class="layui-nav-item">
+				    <a href="javascript:;"><i class="iconfont">&#xe608;</i>资讯管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;" data-url="admin/showCreateMovieNews" data-id='17' data-text="新建资讯"><span class="l-line"></span>新建资讯</a></dd>
+				      <dd><a href="javascript:;" data-url="admin/queryMovieNews" data-id='18' data-text="查看资讯"><span class="l-line"></span>查看资讯</a></dd>
+				      </dl>
+				  </li>
+				   <li class="layui-nav-item">
+				    <a href="javascript:;"><i class="iconfont">&#xe8ae;</i>订单管理</a>
+				    <dl class="layui-nav-child">
+				      <dd><a href="javascript:;" data-url="admin/queryTickets" data-id='19' data-text="订单列表"><span class="l-line"></span>查看订单</a></dd>
+				      </dl>
+				  </li>
+				  <li class="layui-nav-item">
+				  	<a href="javascript:;" data-url="admin/system" data-id='20' data-text="系统设置"><i class="iconfont">&#xe60b;</i>系统设置</a>
+				  </li>
+				</ul>
+			</div>
+			<!--右侧内容-->
+			<div class="main-layout-container">
+				<!--头部-->
+				<div class="main-layout-header">
+					<div class="menu-btn" id="hideBtn">
+						<a href="javascript:;">
+							<span class="iconfont">&#xe60e;</span>
+						</a>
+					</div>
+					<ul class="layui-nav" lay-filter="rightNav">
+					  
+					  <li class="layui-nav-item">
+					    <a href="javascript:;" data-url="admin/super" data-id='5' data-text="个人信息">超级管理员</a>
+					  </li>
+					  <li class="layui-nav-item">
+					  <form th:action="@{/logout}" method="post">
+						    <button class="btn btn-danger" 
+						    style="left: 34px;top: 55px; width: 100px; opacity: 1;color: #c2c2c2;border:none;background-color: white;cursor: pointer;">退出</button>
+						</form>
+					  </li>
+					</ul>
+				</div>
+				<!--主体内容-->
+				<div class="main-layout-body">
+					<!--tab 切换-->
+					<div class="layui-tab layui-tab-brief main-layout-tab" lay-filter="tab" lay-allowClose="true">
+					  <ul class="layui-tab-title">
+					    <li class="layui-this welcome">后台主页</li>
+					  </ul>
+					  <div class="layui-tab-content">
+					    <div class="layui-tab-item layui-show" style="background: #f5f5f5;">
+					    	<!--1-->
+					    	<iframe src="admin/towelcome" width="100%" height="100%" name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
+					    	<!--1end-->
+					    </div>
+					  </div>
+					</div>
+				</div>
+			</div>
+			<!--遮罩-->
+			<div class="main-mask">
+				
+			</div>
+		</div>
+		<script type="text/javascript">
+			var scope={
+				link:'admin/towelcome'
+			}
+		</script>
+		<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/js/main.js" type="text/javascript" charset="utf-8"></script>
+		
+	</body>
+</html>
+ 

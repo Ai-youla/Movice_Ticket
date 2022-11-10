@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>订单信息</title>
+    <link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/admin.css"/>
+</head>
+<style>
+    .timestely {
+        margin-left: 110px;
+        min-height: 36px;
+        line-height: 36px;
+    }
+</style>
+<body>
+<div class="layui-tab page-content-wrap">
+
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" th:action="@{'/role'}"    method="post"  style="width: 90%;padding-top: 20px;">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <img  style="width:250px;" alt="404" th:src="@{'/RSIMAGE/'+${ticket.film.filmPicture}}">
+                    </div>
+                </div>
+                <div class="layui-form-item" >
+                    <label class="layui-form-label">电影名：</label>
+                    <div class="layui-input-block" >
+                        <input type="text"  th:value="${ticket.film.filmName}" disabled autocomplete="off" class="layui-input layui-disabled" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">影院：</label>
+                    <div class="layui-input-block" >
+                        <input type="text"  th:value="${ticket.cinema.cinemaName}" disabled autocomplete="off" class="layui-input layui-disabled" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">影厅：</label>
+                    <div class="layui-input-block" >
+                        <input type="text"  th:value="${positionRelation.seats.cinemaNum}" disabled autocomplete="off" class="layui-input layui-disabled" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">时间：</label>
+                    <div class="layui-input-block timestely" >
+                        <strong  th:text="${positionRelation.viewingTime.beginTime}"></strong>
+                        <b>--</b>
+                        <strong th:text="${positionRelation.viewingTime.overTime}"></strong>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">座位：</label>
+                    <div class="layui-input-block" th:each="positionRelations:${positionRelations}">
+                        <input type="text"  th:value="${positionRelations.viewingPosition.position}" disabled autocomplete="off" class="layui-input layui-disabled" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总计：</label>
+                    <div class="layui-input-block">
+                        <input type="text"  th:value="${ticket.money}" disabled autocomplete="off" class="layui-input layui-disabled" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">订单号：</label>
+                    <div class="layui-input-block">
+                        <input type="text"  th:value="${ticket.out_trade_no}" disabled autocomplete="off" class="layui-input layui-disabled" >
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="submit"  class="layui-btn layui-btn-normal"  value="首页 ">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+</body>
+</html>

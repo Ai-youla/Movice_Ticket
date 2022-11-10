@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>个人中心</title>
+		<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/admin.css"/>
+	</head>
+	<body>
+		<div class="layui-tab page-content-wrap">
+		  <ul class="layui-tab-title">
+		    <li class="layui-this">修改资料</li>
+		    <li>修改头像</li>
+		  </ul>
+		  <div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show">
+		    	<form class="layui-form" th:action="@{'/admin/updatesuper'}"   method="post"  style="width: 90%;padding-top: 20px;">
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">ID：</label>
+				    <div class="layui-input-block">
+				     <input type="hidden" name="userId" id="userId"  autocomplete="off" class="layui-input layui-disabled" th:value="${user.userId}">
+				    
+				      <input type="text" name="userId"  disabled autocomplete="off" class="layui-input layui-disabled" th:value="${user.userId}">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">用户名：</label>
+				    <div class="layui-input-block">
+				      <input type="hidden" name="userName" id="userName"  autocomplete="off" class="layui-input layui-disabled" th:value="${user.userName}">
+				    
+				      <input type="text" name="userName"  disabled autocomplete="off" class="layui-input layui-disabled" th:value="${user.userName}">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">头像：</label>
+				    <div class="layui-input-block">
+				    <img    style="width:100px;" th:src="@{'/UserIMAGE/'+${user.picture}}" alt="没有头像" >
+				     
+				    </div>
+				  </div> 
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">密码：</label>
+				    <div class="layui-input-block">
+				      <input type="password" name="userPassword" id="userPassword" required  placeholder="请输入密码" th:value="${user.userPassword}" class="layui-input">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">邮箱：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="email" required id="email"  placeholder="请输入" autocomplete="off" class="layui-input" th:value="${user.email}">
+				    </div>
+				  </div>
+				   <div class="layui-form-item">
+				    <label class="layui-form-label">电话：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="phone" required id="phone"  placeholder="请输入" autocomplete="off" class="layui-input" th:value="${user.phone}">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">地址：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="address" id="address" required   placeholder="请输入" autocomplete="off" class="layui-input" th:value="${user.address}">
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <input type="submit" class="layui-btn layui-btn-normal" onclick="sub()"   value="立即提交 ">
+				    </div>
+				  </div>
+				</form>
+		    </div>
+		   <div class="layui-tab-item">
+		    	 	<form class="layui-form" th:action="@{''}" id="upphoto" enctype="multipart/form-data" method="post" >
+						 <div class="layui-form-item">
+						    <label class="layui-form-label">原头像：</label>
+						    <div class="layui-input-block">
+						    	 <img   style="width:100px;" alt="没有头像" th:src="@{'/UserIMAGE/'+${user.picture }}">
+        						 <input type="hidden" name="userId" id="uid" th:value="${user.userId }"/>
+						     </div>
+						  </div>
+						  <div class="layui-form-item">
+						    <label class="layui-form-label">新头像：</label>
+						    <div class="layui-input-block">
+						     <img id="imgData"  style="width:100px;"  alt="没有头像" >
+						      <input type="hidden"  id="pName"/>
+						        <input type="file" name="UserPicture" required  id="photofile"  onchange="postData()" class="layui-input">
+				    	 </div>
+						  </div>
+						  <div class="layui-form-item">
+						    <div class="layui-input-block">
+						      <input type="submit" class="layui-btn layui-btn-normal" onclick="sut()" value="立即提交 ">
+
+						    </div>
+						  </div>  
+					</form>
+		    	</div>
+		  </div>
+		</div>
+	<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	 
+	<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+	
+	layui.use(['form','element'], function(){
+		  var form = layui.form();
+		  var element = layui.element();
+		  form.render();
+		});
+	var reg = /^[a-zA-Z0-9]+([-_.][a-aA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/;
+	var ren = /^1[34578]\d{9}$/;
+	 
+	function emailreg(){
+		if(reg.test($("#email").val())){   
+			$("#email").css("border","solid 2px green");
+		}else {
+			$("#email").css("border","solid 2px red");
+			// alert("邮箱错误，请输入正确的邮箱");
+			 $("#email").val("");
+			 return false;
+		}
+	}
+	email.onmouseout = function(){
+		emailreg();
+	}
+	function phoneVer(){
+		if(ren.test($("#phone").val())){
+			$("#phone").css("border","solid 2px green");
+		}else {
+			$("#phone").css("border","solid 2px red");
+			// alert("电话错误，请输入正确的电话");
+			 $("#phone").val("");
+			 return false;
+		}
+	}
+	phone.onmouseout = function(){
+		phoneVer();
+	}
+	  function postData(){	
+		var formData = new FormData($("#upphoto")[0]);
+        formData.append('photo',document.getElementById('photofile').files[0]);
+		$.ajax({
+			url:'/updatephoto',
+			  type:"post",
+			data:formData,
+            contentType: false,
+            processData: false,          
+			success:function(data){  				
+			 if (data.type == "success") {
+			         $("#imgData").attr("src",'/UserIMAGE/'+data.fileName);  
+			         $("#pName").val(data.fileName);
+			     } else {
+			            alert(data.msg);
+			     }	  
+			},
+	   		 error:function(data) {
+			        alert("上传失败")
+			    }
+		})
+	}  
+	function sub(){
+		var user = {
+				"userId":$("#userId").val(),
+				"userName":$("#userName").val(),
+				"userPassword":$("#userPassword").val(),
+				"picture":$("#photofile").val(),
+				"email":$("#email").val(),
+				"phone":$("#phone").val(),
+				"address":$("#address").val()
+				 }
+		$.ajax({
+			url:'/admin/updatesuper',
+			/* type:"post",  */
+			data:user,
+			success:function(data){     
+				 alert(data);  
+				 location.reload(); 
+			},
+	   		 error:function(data) {
+			        alert("操作失败")
+			    }
+		})
+	}
+	function sut(){
+		var user = {
+				"userId":$("#uid").val(),
+				"picture":$("#pName").val()
+				 }
+		$.ajax({
+			url:'/admin/updatesuperPicture',
+			/* type:"post", */
+			data:user,
+			success:function(data){     
+				 alert(data);  
+			},
+	   		 error:function(data) {
+			        alert("操作失败")
+			    }
+		})
+	}
+	</script>
+	</body>
+</html>

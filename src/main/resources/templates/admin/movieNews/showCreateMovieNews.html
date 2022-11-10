@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>创建资讯</title>
+		<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/admin.css"/>
+	</head>
+	<body>
+		<div class="layui-tab page-content-wrap">
+		  <ul class="layui-tab-title">
+		    <li class="layui-this">创建资讯</li> 
+		  </ul>
+		  <div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show">
+		    	<form class="layui-form" th:action="@{'/admin/createMovieNews'}" id="upfile" enctype="multipart/form-data" method="post"  style="width: 90%;padding-top: 20px;">
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">海报：</label>
+				    <div class="layui-input-block">
+						<img id="img" width="100px" src="/images/upload/4ff63428624044e5a9b4157c19c94f61.jpg">
+						<input type="hidden" id="pictureName" name="newsPicture">
+				      <input type="file"  id="picturefile" onchange="updata()" required  lay-verify="required"  autocomplete="off" class="layui-input " >
+				    </div>
+				  </div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">视频：</label>
+						<div class="layui-input-block">
+							<video id="videos" width="100px" src="" th:controls="true"  loop></video>
+							<input type="hidden" id="videoName" name="video">
+							<input type="file" id="videofile" onchange="upvideo()" required lay-verify="required"
+								   autocomplete="off" class="layui-input ">
+						</div>
+
+						<label class="layui-form-label">电影：</label>
+						<div class="layui-input-block">
+							<select name="filmId">
+								<option value="-1">--请选择--</option>
+								<option th:each="film:${films}" th:value="${film.filmId}"
+										th:text="${film.filmName}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+				    <label class="layui-form-label">标题：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input"  >
+				    </div>
+				  </div>
+				   <div class="layui-form-item">
+				    <label class="layui-form-label">影讯：</label>
+				    <div class="layui-input-block">
+				     <textarea name="news" placeholder="请输入内容" class="layui-textarea"></textarea>
+				    </div>
+				  </div> 
+				  <div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <input type="submit" class="layui-btn layui-btn-normal"  value="立即提交 ">
+				      
+				    </div>
+				  </div>
+				</form>
+		    </div>
+		     
+		  </div>
+		</div>
+	<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	 <script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+	</body>
+<script>
+	function updata(){
+		var formData = new FormData($("#upfile")[0]);
+		formData.append('photo',document.getElementById('picturefile').files[0]);
+		$.ajax({
+			url:'/admin/upNewpicture',
+			type:"post",
+			data:formData,
+			contentType: false,
+			processData: false,
+			success:function(data){
+				if (data.type == "success") {
+					$("#img").attr("src",'/RSIMAGE/'+data.fileName);
+					$("#pictureName").val(data.fileName);
+				} else {
+					alert(data.msg);
+				}
+			},
+			error:function(data) {
+				alert("上传失败")
+			}
+		})
+	}
+	function upvideo(){
+		var formData = new FormData($("#upfile")[0]);
+		formData.append('video',document.getElementById('videofile').files[0]);
+		$.ajax({
+			url:'/admin/upNewvideo',
+			type:"post",
+			data:formData,
+			contentType: false,
+			processData: false,
+			success:function(data){
+				if (data.type == "success") {
+					$("#videos").attr("src",'/RSIMAGE/'+data.fileName);
+					$("#videoName").val(data.fileName);
+				} else {
+					alert(data.msg);
+				}
+			},
+			error:function(data) {
+				alert("上传失败")
+			}
+		})
+	}
+</script>
+</html>

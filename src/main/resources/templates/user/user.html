@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="iframe-h" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+         <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+         <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<title></title>
+	</head>
+	<style>
+		.selected{font-weight:bold; background: #1E9FFF; color:#fff;}
+		.film{
+			display: flex;
+			align-content: space-around;
+			list-style: none;
+			flex-wrap: wrap;
+			justify-content: space-around;
+		}
+		.film li{
+			height: 200px;
+		}
+		.film li:hover{
+			cursor:pointer;
+		}
+		.info{
+			position: relative;
+		}
+		.info span{
+			display: none;
+		}
+		.info:hover span{
+			display: block;
+			font-size: 16px;
+			position: absolute;
+			top: 20px;
+			left: 80px;
+			color: #ccc;
+		}
+		.film li span:hover{
+			font-size: 18px;
+		}
+	</style>
+	<body>
+		<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle active" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/role">首页</a>
+				</div>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="">
+							<a th:href="@{'/user/showCinema'}">电影</a>
+						</li>
+
+						<li>
+							<a th:href="@{'/user/userInfo'}" >个人中心</a>
+						</li>
+					</ul>
+					<form class="navbar-form navbar-left" th:action="@{'/user/byfilmName'}" role="search">
+						<div class="form-group">
+							<input type="text" name="filmName" class="form-control" placeholder="电影"/>
+						</div> <button type="submit" class="btn btn-default">Submit</button>
+					</form>
+					<ul class="nav navbar-nav navbar-right">
+						<li >
+							<form th:action="@{/logout}" method="post">
+								<button class="btn btn-danger" style="position: relative;  left: -44px; top: 0px; height: 50px; color: burlywood;
+								 opacity: 1;border:none;background-color: white;cursor: pointer;">退出</button>
+							</form>
+
+						</li>
+					</ul>
+				</div>
+
+			</nav>
+			<div class="carousel slide" id="carousel-454734">
+				<ol class="carousel-indicators">
+					<li data-slide-to="0" data-target="#carousel-454734">
+					</li>
+					<li data-slide-to="1" data-target="#carousel-454734">
+					</li>
+					<li data-slide-to="2" data-target="#carousel-454734" class="active">
+					</li>
+				</ol>
+				<div class="carousel-inner">
+					<div class="item">
+						<a th:href="@{'/user/queryfilm?filmId=5'}">
+						<img alt="" src="/images/upload/biaoti1.jpg" />
+						<div class="carousel-caption">
+							<h4>
+								替身演员
+							</h4>
+						</div>
+						</a>
+					</div>
+					<div class="item">
+						<a th:href="@{'/user/queryfilm?filmId=7'}">
+						<img alt="" src="/images/upload/一面之词.jpg" />
+						<div class="carousel-caption">
+							<h4>
+								一面之词
+							</h4>
+						</div>
+						</a>
+					</div>
+					<div class="item active">
+						<a th:href="@{'/user/queryfilm?filmId=2'}">
+						<img alt="" src="/images/upload/biaoti3.jpg" />
+						<div class="carousel-caption">
+							<h4>
+								妈妈
+							</h4>
+						</div>
+						</a>
+					</div>
+				</div> <a class="left carousel-control" href="#carousel-454734" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#carousel-454734" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+			</div>
+
+			<ol>
+				<li>
+					Lorem ipsum dolor sit amet
+				</li>
+			</ol>
+
+			<div class="tabbable" id="tabs-851286">
+				<ul class="nav nav-tabs">
+					<li>
+						 <a href="#panel-241848" data-toggle="tab">正在热播</a>
+					</li>
+					<li class="active">
+						 <a href="#panel-357890" data-toggle="tab">即将上映</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="panel-241848">
+						<div class="col-md-4" th:each="film:${films}">
+							<div class="thumbnail" ><!--跳转到userController-->
+								<a  class="info" th:href="@{'/user/queryfilm?filmId='+${film.filmId}}">
+									<img alt="300x200" style="width:280px;height: 250px" th:src="@{'/RSIMAGE/'+${film.filmPicture}}">
+									<span    th:text="${film.filmName}"></span>
+								</a>
+								<div class="caption">
+									<h3 class="text-success"  th:text="${film.filmName}">
+									</h3>
+									<p><!--跳转到cinemaController-->
+										<a class="btn btn-primary"  th:href="@{'/user/showfilm?filmId='+${film.filmId}}">购票</a>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12" >
+						<ul class="pagination page">
+							<li>
+								<a  href="#" th:text="${count}+'部'"></a>
+							</li>
+							<li>
+								<a href="#" th:text="${pages}+'页'"></a>
+							</li>
+							<li th:class="${page==1 ?'disabled':''}">
+								<a th:href="@{'/role?page='+${page - 1}}">Prev</a></li>
+
+							<li   th:each="i:${#numbers.sequence(1,pages)}" th:class="${page==i ?'active':''}" >
+								<a  th:href="@{'/role?page='+${i}}"  th:text="${i}"></a>
+							</li>
+
+							<li th:class="${page==pages ?'disabled':''}">
+								<a th:href="@{'/role?page='+${page+1}}">Next</a>
+							</li>
+						</ul>
+						</div>
+					</div>
+					<div class="tab-pane " id="panel-357890">
+						<div class="col-md-4" th:each="film:${films}">
+							<div class="thumbnail" >
+								<a  class="info" th:href="@{'/user/queryfilm?filmId='+film.filmId}">
+									<img alt="300x200" style="width:260px;height: 280px" th:src="@{'/RSIMAGE/'+${film.filmPicture}}">
+									<span    th:text="${film.filmName}"></span>
+								</a>
+								<div class="caption">
+									<h3 class="text-success"  th:text="${film.filmName}">
+									</h3>
+									<p>
+										<a class="btn btn-primary"  th:href="@{'/user/showfilm?filmId='+${film.filmId}}">购票</a>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12" >
+							<ul class="pagination page">
+								<li>
+									<a  href="#" th:text="${count}+'部'"></a>
+								</li>
+								<li>
+									<a href="#" th:text="${pages}+'页'"></a>
+								</li>
+								<li th:class="${page==1 ?'disabled':''}">
+									<a th:href="@{'/role?page='+${page - 1}}">Prev</a></li>
+
+								<li   th:each="i:${#numbers.sequence(1,pages)}" th:class="${page==i ?'active':''}" >
+									<a  th:href="@{'/role?page='+${i}}"  th:text="${i}"></a>
+								</li>
+
+								<li th:class="${page==pages ?'disabled':''}">
+									<a th:href="@{'/role?page='+${page+1}}">Next</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+			<div class="panel-group" id="panel-820577">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<p class="panel-title" data-toggle="collapse" data-parent="#panel-820577" href="#panel-element-675743">电影资讯</p>
+					</div>
+					<div id="panel-element-675743" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<div class="col-md-4" th:each="movieNews:${movieNews}">
+								<div class="thumbnail" >
+									<img alt="300x200" style="width:280px;height: 300px" th:src="@{'/RSIMAGE/'+${movieNews.newsPicture }}">
+									<div class="caption">
+										<h3 th:text="${movieNews.title}">
+										</h3>
+<!--										<p th:text="${movieNews.news}">-->
+<!--										 </p>-->
+										<p>
+											<a class="btn btn-primary" th:href="@{'/user/showMovieNews?movieNewsId='+${movieNews.movieNewsId}}">了解</a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<ul class="pagination news">
+								<li>
+									<a  href="#" th:text="${reCounte}+'条'"></a>
+								</li>
+								<li>
+									<a href="#" th:text="${pages3}+'页'"></a>
+									<input type="hidden" id="current" th:value="${page}">
+								</li><!--th:href="@{'/role?page='+${page - 1}}"-->
+								<li > <a >Prev</a></li>
+								<li    th:each="i:${#numbers.sequence(1,pages3)}">
+									<a  th:href="@{'/role?page='+${i}}"  th:text="${i}"></a>
+								</li>
+
+								<li>
+									<a th:href="@{'/role?page='+${page+1}}">Next</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<p class="panel-title" data-toggle="collapse" data-parent="#panel-820577" href="#panel-element-143377">积分商品</p>
+					</div>
+					<div id="panel-element-143377" class="panel-collapse collapse">
+						<div class="panel-body">
+							<div class="col-md-4 produce" th:each="produces:${produces}">
+								<div class="thumbnail" >
+									<img alt="300x200" style="width:300px;height: 200px" th:src="@{'/RSIMAGE/'+${produces.picture }}">
+									<div class="caption" >
+										<h3 th:text="${produces.produceName}">
+										</h3>
+										<p >
+											<b class="state" th:text="${produces.state==0?'可兑换':(produces.state==1?'已结束':'即将推出')}"></b>
+											<span>数量：</span><span class="number" th:text="${produces.produceNum}"></span>
+											<span>需要积分：</span><strong th:text="${produces.integral}"></strong>
+										</p>
+										<p>
+											<input type="hidden" th:value="${produces.produceId}">
+											<a class="btn btn-success sub" href="#">兑换</a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<ul class="pagination">
+								<li>
+									<a  href="#" th:text="${produceCount}+'类'"></a>
+								</li>
+								<li>
+									<a href="#" th:text="${producPpages}+'页'"></a>
+								</li>
+								<li > <a th:href="@{'/role?page='+${page - 1}}">Prev</a></li>
+								<li   th:each="i:${#numbers.sequence(1,producPpages)}">
+									<a  th:href="@{'/role?page='+${i}}"  th:text="${i}"></a>
+								</li>
+
+								<li>
+									<a th:href="@{'/role?page='+${page+1}}">Next</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	</body>
+	<script>
+		$(function () {
+			$(".page a").each(function () {
+				// $("a").eq(0).addClass('selected');
+				$(this).click(function () {
+					$(this).siblings('a').removeClass('selected');  // 删除其他兄弟元素的样式
+					$(this).addClass('selected');// 添加当前元素的样式
+
+				})
+			})
+
+			$(".state").each(function () {
+				if($(this).text()=='已结束' ){
+					$(this).parent().parent().find($(".sub")).addClass("disabled");
+				}
+				$(".number").each(function () {
+					if ($(this).text() == '0'){
+						$(this).parent().parent().find($(".sub")).addClass("disabled");
+					}
+				})
+			})
+
+
+			$(".produce").find($(".sub")).each(function () {
+				$(this).click(function () {
+					var produceId = $(this).parent().children("input").val();
+					var produceNum = $(this).parent().parent().find($(".number")).text();
+					var th = $(this);
+					// console.log(produceId + "============"+produceNum);
+					$.ajax({
+						url:'/user/updateProduce',
+						data:{"produceId":produceId},
+						success:function(data){
+							var map = data;
+							if(map.type == "success"){
+								th.parent().parent().find($(".number")).text(map.produce.produceNum);
+								// console.log(th.parent().parent().find($(".number")).text(map.produce.produceNum)+"-------"+"+++"+map.produce.produceNum);
+								alert("success")
+							}else {
+								alert(map.msg)
+							}
+
+							}
+					})
+				})
+			})
+		})
+	</script>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>位置安排</title>
+		<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/admin.css"/>
+ 
+		<link rel="stylesheet" type="text/css" href="/css/jquery.seat-charts.css">
+		<link rel="stylesheet" type="text/css" href="/css/style.css">
+		<script type="text/javascript" src="/js/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="/js/jquery.seat-charts.min.js"></script>
+		<style type="text/css">
+		div.seatCharts-seat {
+			background-color: white;
+		}
+		div.seatCharts-seat.available {
+			background:#B9DEA0  url(/images/zuowei.png) no-repeat 0px 0px/100% 100%;
+		}
+		#cinemaNum,#x,#y{
+			border:1px solid #c2b8b8;
+				height: 38px;
+			text-indent: 10px;
+
+}
+</style>
+</head>
+<body>
+<div class="layui-tab page-content-wrap">
+		  <ul class="layui-tab-title">
+		    <li class="layui-this">位置安排</li> 
+		  </ul>
+		  <div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show">
+				<form th:action="@{'/admin/creatSeatRelation'}"   method="post">
+				<input type="hidden" id="cinemaId" name="cinemaId"  th:value="${cinemaId}"  >
+				<div class="movie" >
+					<div id="seat-map">
+						<a class="layui-btn layui-btn-normal" th:href="@{'/admin/selectCinema'}">返回</a>	
+						 <input type="text" id="cinemaNum" name="cinemaNum"   placeholder="输入几号影厅" >
+						<div class="front" style="color: blue; font-size: 16px;">座位排列</div>
+						
+						<div >
+							 <input type="text" id="x" style="width: 100px;  " value="10"  >
+							 <span style="font-size: 18px;">x</span>
+							 <input type="text" style="width: 100px;" id="y" value="10" >
+							 <input type="button" class="layui-btn layui-btn-normal" value="确定" onclick="createSeat('')">
+						</div>
+						<div id="seat-maps" style="width:500px"></div>
+						 
+					</div>
+					<div class="booking-details">
+						 <ul id="selected-seats"></ul> 
+						 <input type="submit"  class="layui-btn layui-btn-normal" id="save" style="display: none;" value="保存" > 
+						  
+						<div id="legend"></div>
+					</div>
+				</div>
+				<div>
+				<input type="hidden" name="map" id="mapData"> 
+				 
+				</div>
+				</form>
+			</div>
+	</div>
+</div>
+<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	 <script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+var map = new Array();
+ 
+var cinemaId = $("#cinemaId").val();
+ 
+function createSeat(){
+	 var save = document.getElementById("save");
+	 save.style.display = "block";
+	 map = [];
+	
+		var x = parseInt($("#x").val());
+		var y = parseInt($("#y").val());
+		 
+		for(var i = 0 ; i<x ; i++){
+			map[i]="";
+			for(var j = 0; j<y ; j++){
+				map[i] +="e";	
+			}
+		}
+	
+	$('#seat-maps').empty();
+	$('#legend').empty();	
+	var firstSeatLabel = 1;	 
+	var oldRow = 1;	 
+	fn();
+	
+}
+function fn (){
+	 var sc = $('#seat-maps').seatCharts({
+		map: map,
+		naming:{
+			top:false,
+			left:false,
+			getLabel:function (character, row, column) {
+				var str = '';
+				return str;
+			}
+		},
+		legend:{
+			node:$('#legend'),
+			items:[
+				['e','available','位置']	,
+				['e','none','过道']	
+			]
+		},
+		click: function () {
+			if (this.status() == 'available') { 			 
+				map[this.settings.row]=map[this.settings.row].substring(0,this.settings.column)+"_"
+				+map[this.settings.row].substring(this.settings.column+1);	
+				this.node().css({
+					'background-color' : 'white',
+						'background-image:': 'none'
+				});
+				return 'none';
+			}else{	
+				 map[this.settings.row]=map[this.settings.row].substring(0,this.settings.column)+"e"
+				 +map[this.settings.row].substring(this.settings.column+1);
+				 this.node().css({
+						'background-color' : '#B9DEA0',
+							'background-image:': 'url(/images/zuowei.png) no-repeat 0px 0px/100% 100%'
+					});
+				return 'available';
+			} 
+		}
+	});
+	  
+	 
+}
+$('#save').on('click',function(){
+	var mapData = "";
+		
+ 	 for(var i=0; i<map.length;i++){
+ 		 if(i==map.length-1){
+ 			mapData += map[i]
+ 		 }else{
+ 			  mapData += map[i]+","; 	
+ 		 }
+ 	} 
+ 	 $("#mapData").val(mapData);
+
+});
+</script>
+</body>
+</html>

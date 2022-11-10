@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>海淘电影票销售平台</title>
+		<link rel="stylesheet" type="text/css" href="/layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="/css/login.css" />
+	</head>
+<style>
+.layui-form-label {
+    float: left;
+    width:50px;
+    display: block;
+    padding: 9px 15px;
+    font-weight: 400;
+    text-align: right;
+}
+.layui-input-block {
+	margin-left:0px;
+    min-height: 36px;
+}
+.m-login-warp .layui-input {
+    height: 40px;
+    width: 240px;
+    line-height: 40px\9;
+    margin-bottom: 5px;
+    -webkit-transition-property: none;
+    transition-property: none;
+    background: #ececec;
+    border: 1px solid #ececec;
+}
+</style>
+	<body>
+		<div class="m-login-bg">
+			<div class="m-login">
+				<h3>注册</h3>
+				<div class="m-login-warp">
+					<form class="layui-form" th:action="@{'/regist'}" id="upphoto" enctype="multipart/form-data" method="post">
+						<div class="layui-form-item"> 
+							<label class="layui-form-label">*姓名：</label>
+							 <div class="layui-input-block">
+							   <input type="text" name="userName" id="user" required  
+					        placeholder="请输入数字，字母组合长度大于五" autocomplete="off" class="layui-input"> 
+							</div> 
+						</div>
+						 
+						<div class="layui-form-item"> 
+							<label class="layui-form-label">*密码：</label>
+							 <div class="layui-input-block">
+							    <input type="text" name="userPassword" id="pass" required   placeholder="请输入数字，字母组合长度大于五"
+							 autocomplete="off" class="layui-input">
+							</div> 
+						</div> 
+						<input type="hidden" name="picture" id="pName">
+						<div class="layui-form-item">
+							<label class="layui-form-label">*头像：</label>
+							 <div class="layui-input-block">
+							  <img id="imgData"  style="width:30px; display:none;"  alt="没有头像" src="/images/upload/touxiang.png" >
+							     
+							 <input type="file"  name="verity" required id="ver" onchange="postData()"  placeholder="头像" autocomplete="off" class="layui-input"> 
+							</div> 
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">*邮件：</label>
+							 <div class="layui-input-block">
+							 <input type="email" name="email" id="email" required   placeholder="请输入邮件" autocomplete="off" class="layui-input">
+							</div>   
+						</div>
+						<div class="layui-form-item">
+						<label class="layui-form-label">*电话：</label>
+							 <div class="layui-input-block">
+							<input type="text" name="phone" id="phone" required   placeholder="请输入电话" autocomplete="off" class="layui-input">
+							</div>   
+						</div>  
+						 
+						<div class="layui-form-item">
+							<label class="layui-form-label">地址：</label>
+							 <div class="layui-input-block">
+							<input type="text" name="address" id="address"    placeholder="请输入地址" autocomplete="off" class="layui-input">
+							</div>   
+						</div>  
+							 
+						<div class="layui-form-item m-login-btn">
+							<div class="layui-inline">
+								<button type="submit" id="sub"  class="layui-btn layui-btn-normal">注册</button>
+							</div>
+							<div class="layui-inline">
+								<button type="reset" class="layui-btn layui-btn-primary">取消</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				 
+			</div>
+		</div>
+		<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		 <script type="text/javascript" src="/js/jquery-1.11.0.min.js"></script>
+		<script>
+		window.load
+		var user = document.querySelector("#user");
+		var pass = document.querySelector("#pass");
+		 
+		var sub = document.querySelector("#sub");
+		var email = document.querySelector("#email");
+		var phone = document.querySelector("#phone");
+		
+		var re2 = /^[0-9A-Za-z][0-9A-Za-z_]{4,19}$/;
+		var pswre4 = /^[0-9a-zA-Z_,.?]{5,20}$/;
+		var reg = /^[a-zA-Z0-9]+([-_.][a-aA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/;
+		var ren = /^1[34578]\d{9}$/;
+		
+		function emailreg(){
+			if(reg.test(email.value)){   
+				email.style.border = "solid 2px green";
+			}else {
+				email.style.border = "solid 2px red"; 
+				// alert("邮箱错误，请输入正确的邮箱");
+				 email.value="";
+				 return false;
+			}
+		}
+		email.onmouseout = function(){
+			emailreg();
+		}
+		function phoneVer(){
+			if(ren.test(phone.value)){
+				phone.style.border = "solid 2px green";
+			}else {
+				phone.style.border = "solid 2px red"; 
+			//	 alert("电话错误，请输入正确的电话");
+				 phone.value="";
+				 return false;
+			}
+		}
+		phone.onmouseout = function(){
+			phoneVer();
+		}
+		
+		function userName (){
+			if(re2.test(user.value)){   
+				user.style.border = "solid 2px green";
+			}else {
+				user.style.border = "solid 2px red"; 
+				// alert("用户名错误，请输入数字，字母组合长度大于五");
+				 user.value="";
+				 return false;
+			}
+		}
+		function pwc(){
+			if(pswre4.test(pass.value)){  
+				pass.style.border = "solid 2px green";  			
+			}else {
+				pass.style.border = "solid 2px red";
+			//	alert("密码错误，请输入数字，字母组合长度大于五");  
+				pass.value="";
+				return false;
+			}
+		}
+		user.onmouseout = function(){
+			userName(); 
+			$.ajax({
+				 url:'/to/judgeUser',
+				 async:true,
+				 data:{"userName":user.value}, 	
+				 success:function(data){  
+					  
+					 if( data =='用户已注册'){
+						  alert(data);
+						  return false;
+					 }
+				 }
+			 })
+			
+		}
+		pass.onmouseout = function(){
+			 pwc();
+		}
+		 sub.onclick = function(){
+			userName();
+			pwc();
+			emailreg(); 
+			phoneVer();
+			 alert("注册成功") ;
+		} 
+		  function postData(){	
+				var formData = new FormData($("#upphoto")[0]);
+		        formData.append('photo',document.getElementById('ver').files[0]);
+				$.ajax({
+					url:'/updatephoto',
+					  type:"post",
+					data:formData,
+		            contentType: false,
+		            processData: false, 
+		            
+					success:function(data){  
+						
+					 if (data.type == "success") {
+					         $("#imgData").attr("src",'/UserIMAGE/'+data.fileName);
+					         $("#imgData").css("display","link-block");
+					         $("#ver").css("position"," relative");
+					         $("#ver").css("left"," 0px");
+					         $("#pName").val(data.fileName);
+					     } else {
+					            alert(data.msg);
+					     }	  
+					},
+			   		 error:function(data) {
+					        alert("上传失败")
+					    }
+				})
+			}  
+			 
+		</script>
+	</body>
+</html>

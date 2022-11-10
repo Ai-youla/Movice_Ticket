@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html class="iframe-h" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title></title>
+</head>
+<style>
+    .selected{font-weight:bold; background: #1E9FFF; color:#fff;}
+    .film{
+        display: flex;
+        align-content: space-around;
+        list-style: none;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    .film li{
+        height: 200px;
+    }
+    .film li:hover{
+        cursor:pointer;
+    }
+    .info{
+        position: relative;
+    }
+    .info span{
+        display: none;
+    }
+    .info:hover span{
+        display: block;
+        font-size: 16px;
+        position: absolute;
+        top: 20px;
+        left: 80px;
+        color: #ccc;
+
+    }
+    .film li span:hover{
+        font-size: 18px;
+    }
+
+</style>
+<body>
+<div >
+    <div class="col-md-12 column">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle active" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/role">首页</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="">
+                        <a th:href="@{'/user/showCinema'}">电影</a>
+                    </li>
+                    <li>
+                        <a th:href="@{'/user/userInfo'}" >个人中心</a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left" th:action="@{'/user/byfilmName'}" role="search">
+                    <div class="form-group">
+                        <input type="text" name="filmName" class="form-control" placeholder="电影"/>
+                    </div> <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <form th:action="@{/logout}" method="post">
+                            <button class="btn btn-danger" style="position: relative;  left: -44px; top: 0px; height: 50px; color: burlywood;
+								 opacity: 1;border:none;background-color: white;cursor: pointer;">退出</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="panel-body">
+        <div class="caption"  th:each="film:${films}">
+            <div class="col-md-6">
+                <div class="thumbnail" ><!--跳转到userController-->
+                    <a  class="info" th:href="@{'/user/queryfilm?filmId='+${film.filmId}}">
+                        <img alt="300x200" style="width:300px;height: 200px" th:src="@{'/RSIMAGE/'+${film.filmPicture}}">
+                        <span style="text-align: center"   th:text="${film.filmName}"></span>
+                    </a>
+                    <div class="caption">
+                        <h3 class="text-success"  style="text-align: center"    th:text="${film.filmName}">
+                        </h3>
+                        <p style="text-align: center"><!--跳转到cinemaController-->
+                            <a class="btn btn-primary"     th:href="@{'/user/showfilm?filmId='+${film.filmId}}">购票</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>

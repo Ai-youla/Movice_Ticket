@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form name=alipayment th:action="@{'/open/aliquery'}" method=post target="_blank">
+            <div id="body" style="clear:left">
+                <dl class="content">
+                    <dt>商户订单号
+：</dt>
+                    <dd>
+                        <input id="out_trade_no" name="out_trade_no" />
+                    </dd>
+                    
+                    <dt>支付宝交易号：</dt>
+                    <dd>
+                        <input id="trade_no" name="trade_no" />
+                    </dd>
+                    
+                    <dt></dt>
+                    <dd>
+                        <span style="line-height: 28px; color:red;">注意：商户订单号和支付宝交易号不能同时为空。 trade_no、  out_trade_no如果同时存在优先取trade_no</span>
+                    </dd>
+                    <dd id="btn-dd">
+                        <span class="new-btn-login-sp">
+                            <button class="new-btn-login" type="submit" style="text-align:center;">确 认</button>
+                        </span>
+                        <span class="note-help">如果您点击“确认”按钮，即表示您同意该次的执行操作。</span>
+                    </dd>
+                </dl>
+            </div>
+		</form>
+</body>
+</html>

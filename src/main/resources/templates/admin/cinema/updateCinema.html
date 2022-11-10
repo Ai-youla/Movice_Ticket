@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+  		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>编辑影院</title>
+		<link rel="stylesheet" type="text/css" href="/layui/css/layui.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/admin.css"/>
+		 
+</head>
+<style>
+select{
+			 display: inline-block;
+			    height: 38px;
+			    line-height: 38px;
+			    border: 1px solid #e6e6e6;
+			    background-color: #fff;
+			    border-radius: 2px;
+			    width: 100%;
+    			padding-left: 10px;
+    			 cursor: pointer;
+		}
+ #province,#city,#county {
+				display: inline-block;
+			    font-size: 16px; 
+			    width: 33%;
+		 	    
+		}
+</style>
+<body>
+		<div class="layui-tab page-content-wrap">
+		  <ul class="layui-tab-title">
+		    <li class="layui-this">编辑影院</li> 
+		  </ul>
+		  <div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show">
+		    	<form   th:action="@{'/admin/updateCinema'}"   method="post"  style="width: 90%;padding-top: 20px;">
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">影院名：</label>
+				    <div class="layui-input-block">
+				    <input type="hidden" id="cinemaId" name="cinemaId" th:value="${cinema.cinemaId}" placeholder="影院ID" >
+	<input type="hidden" id="cinemaAddressId" name="cinemaAddressId" th:value="${cinema.cinemaAddress.cinemaAddressId}" placeholder="影院地址ID" >
+				      <input type="text" id="cinemaName" name="cinemaName" th:value="${cinema.cinemaName}" required   placeholder="请输入" autocomplete="off" class="layui-input"  >
+				    </div>
+				  </div>
+
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">影院类型：</label>
+				    <div class="layui-input-block">
+					    <select name="cinemaTypeId" >
+						        <option >--请选择--</option>
+					            <option th:each="cinemaType:${cinemaTypes}"  th:selected="${cinemaType.cinemaTypeId==cinema.cinemaTypeId}"
+					            th:value="${cinemaType.cinemaTypeId}" th:text="${cinemaType.type}"></option>
+				        </select>
+			         </div>
+				  </div>
+				   <div class="layui-form-item">
+				    <label class="layui-form-label">地址：</label>
+				    <div class="layui-input-block se" >
+					    <select name="province" id="province"   >
+					        <option >--请选择省份--</option>
+				            <option class="ops" th:id="${province_city_county.id}" 
+				             th:each="province_city_county:${province_city_countys}" th:selected="${province_city_county.name==cinema.cinemaAddress.province}"	              
+				            th:value="${province_city_county.name}" th:text="${province_city_county.name}"></option>
+				        </select>  
+				       <select name="city" id="city">
+					        <option>--请选择城市--</option>
+				            <option th:each="province_city_county:${province_city_county2}"
+				            th:value="${province_city_county.name}" th:text="${province_city_county.name}"
+				            th:selected="${province_city_county.name==cinema.cinemaAddress.city}"></option>
+				        </select>
+				        <select name="county" id="county" >
+						        <option>--请选择地区/县--</option>
+					            <option th:each="province_city_county:${province_city_county3}"
+					            th:value="${province_city_county.name}" th:text="${province_city_county.name}"
+					            th:selected="${province_city_county.name==cinema.cinemaAddress.county}"></option>
+				        </select>
+				     </div> 
+				  </div>
+				    
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">详细地址：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="detailed" required th:value="${cinema.cinemaAddress.detailed}"   placeholder="请输入" autocomplete="off" class="layui-input"  >
+				    </div>
+				  </div>
+				   <div class="layui-form-item">
+				    <label class="layui-form-label">服务：</label>
+				    <div class="layui-input-block">
+				      <input type="text" name="service" required th:value="${cinema.service}"  placeholder="请输入" autocomplete="off" class="layui-input"  >
+				    </div>
+				  </div>
+				    
+				  <div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <input type="submit" class="layui-btn layui-btn-normal"  value="保存 ">
+				      <a class="layui-btn layui-btn-normal" th:href="@{'/admin/selectCinema'}">返回</a>
+				    </div>
+				  </div>
+				</form>  
+		    </div>  
+		  </div>
+		</div>
+	<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	 <script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
+	 <script type="text/javascript" src="/js/jquery-1.11.0.min.js"></script>
+	</body>
+<script type="text/javascript">
+	 
+		var provinceObj = document.getElementById("province");
+		 
+		var cityObj = document.getElementById("city");
+		provinceObj.onchange = function(){
+			var province = $("#province").val();
+			 
+				 $.ajax({
+					 url:'/selectCity',
+					 async:true,
+					 data:{"province":province},
+						
+					 success:function(data){
+						 var citys = data;
+						 var rSelect = "<option >--请选择城市--</option>";
+						 for(var i =0; i<citys.length; i++){
+							 rSelect +=("<option value='"+citys[i].name+"'>"+citys[i].name+"</option>") ;
+						 }
+						  
+						 $("#city").empty();
+						 $("#city").append(rSelect);
+					 }
+				 })
+		} 
+		cityObj.onchange = function(){
+			var city = $("#city").val();		
+				 $.ajax({
+					 url:'/selectCounty',
+					 async:true,
+					 data:{"city":city},
+						
+					 success:function(data){
+						 var countys = data;
+						 var rSelect = "<option >--请选择地区/县--</option>";
+						 for(var i =0; i<countys.length; i++){
+							 rSelect +=("<option value='"+countys[i].name+"'>"+countys[i].name+"</option>") ;
+						 }
+						 $("#county").empty();
+						 $("#county").append(rSelect);
+						 
+					 }
+				 })
+		} 
+
+</script>
+</html>

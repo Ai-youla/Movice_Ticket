@@ -1,0 +1,106 @@
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>编辑参演人员</title>
+</head>
+<body>
+<form th:action="@{'/admin/updateParticipantsPicture'}" enctype="multipart/form-data" method="post">
+  <img class="img"  style="width:100px;" alt="404"  th:src="@{'/PlayIMAGE/'+${participants.priture}}">
+ 	 <input type="hidden" id="" name="ParticipantsId" th:value="${participants.ParticipantsId}"  placeholder="参演Id" >
+ 选择新图：<input type="file" id="participantspicture" name="participantspicture">
+  <input type="submit" value="确定">
+</form>
+<form th:action="@{'/admin/updatePerson'}"  method="post">       
+          	  <input type="hidden" id="" name="ParticipantsId" th:value="${participants.ParticipantsId}"  placeholder="参演Id" >
+          	  <input type="text" id="type" name="type"  th:value="${participants.type}" placeholder="人员类型" >
+	        <input type="text" id="TureName" name="TureName" th:value="${participants.TureName}"  placeholder="真名" >
+	        <input type="text" id="playName" name="playName" th:value="${participants.playName}"  placeholder="饰演名" >
+         
+                 <input type="submit" value="保存">
+         
+   </form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html class="iframe-h" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>编辑参演人员</title>
+		<link rel="stylesheet" type="text/css" href="/layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="/css/admin.css" />
+		
+	</head>
+
+	<body>
+		<div class="layui-tab page-content-wrap">
+		  <ul class="layui-tab-title">
+		    <li class="layui-this">编辑参演人员</li> 
+		    <li>修改人员头像</li> 
+		  </ul>
+		  <div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show">
+					 <form class="layui-form" th:action="@{'/admin/updatePerson'}"  enctype="multipart/form-data" method="post"  style="width: 90%;padding-top: 20px;">
+				  		 <input type="hidden" id="" name="ParticipantsId" th:value="${participants.ParticipantsId}"  placeholder="参演Id" >
+					  <div class="layui-form-item">
+					    <label class="layui-form-label">人员类型：</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="type"  th:value="${participants.type}" required  lay-verify="required"   class="layui-input " >
+					    </div>
+					  </div>
+					   
+					  <div class="layui-form-item">
+					    <label class="layui-form-label">真名：</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="TureName" th:value="${participants.TureName}" required  lay-verify="required" placeholder="请输入"   class="layui-input"  >
+					    </div>
+					  </div>
+					   <div class="layui-form-item">
+					    <label class="layui-form-label">饰演名：</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="playName" th:value="${participants.playName}" required  lay-verify="required" placeholder="请输入"   class="layui-input"  >
+					    </div>
+					  </div>
+					    
+					  <div class="layui-form-item">
+					    <div class="layui-input-block">
+					      <input type="submit" class="layui-btn layui-btn-normal"  value="立即提交 ">
+					       <a class="layui-btn layui-btn-normal" th:href="@{'/admin/selectPerson'}">返回</a>
+					    </div>
+					  </div>
+				</form>
+				</div>
+				<div class="layui-tab-item">
+		    	 	<form class="layui-form" th:action="@{'/admin/updateParticipantsPicture'}" enctype="multipart/form-data" method="post" >
+						 <div class="layui-form-item">
+						    <label class="layui-form-label">头像：</label>
+						    <div class="layui-input-block">
+						    	 <img class="img"  style="width:100px;" alt="404"  th:src="@{'/PlayIMAGE/'+${participants.priture}}">
+ 	 							<input type="hidden"   name="ParticipantsId" th:value="${participants.ParticipantsId}"  placeholder="参演Id" >
+						     </div>
+						  </div>
+						  <div class="layui-form-item">
+						    <label class="layui-form-label">新图片：</label>
+						    <div class="layui-input-block">
+						       <input type="file" name="participantspicture" required  lay-verify="required"  autocomplete="off" class="layui-input " >
+						    </div>
+						  </div>
+						  <div class="layui-form-item">
+						    <div class="layui-input-block">
+						      <input type="submit" class="layui-btn layui-btn-normal"  value="立即提交 ">
+						      <a class="layui-btn layui-btn-normal" th:href="@{'/admin/selectPerson'}">返回</a>
+						    </div>
+						  </div>  
+					</form>
+		    	</div>
+			</div>
+		</div>
+		<script src="/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/js/common.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>
